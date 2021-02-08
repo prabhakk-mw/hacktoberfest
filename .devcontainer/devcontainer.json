@@ -1,0 +1,7 @@
+{
+  "name": "Rashed Hacktoberfest",
+  "build": {
+    "dockerfile": "Dockerfile"
+   },
+   "extensions": ["auchenberg.vscode-browser-preview"],
+}
