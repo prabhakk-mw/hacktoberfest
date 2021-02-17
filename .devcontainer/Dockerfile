@@ -86,5 +86,5 @@ ENV MATLAB_USE_USERWORK 1
 
 ENTRYPOINT [ "matlab-jupyter-app" ]
 
-COPY scripts/* /tmp/scripts/
-RUN bash /tmp/scripts/open_matlab.sh
+#COPY scripts/* /tmp/scripts/
+#RUN bash /tmp/scripts/open_matlab.sh
