@@ -13,5 +13,6 @@
     8888
   ],
   "overrideCommand": false,
+  "postCreateCommand" : "echo 'PCC Launching Browser!!' && python3 -m webbrowser http://localhost:8888 && echo 'PCC Launching complete!'",
   "postAttachCommand" : "echo 'Launching Browser!!' && python3 -m webbrowser http://localhost:8888 && echo 'Launching complete!'"
 }
