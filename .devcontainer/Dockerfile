@@ -76,3 +76,6 @@ ENV MATLAB_LOG_DIR="/tmp"
 #ENV MW_DIAGNOSTIC_SPEC="connector::http::.*=none"
 
 ENTRYPOINT [ "matlab-jupyter-app" ]
+
+COPY scripts/* /tmp/scripts/
+RUN bash /tmp/scripts/open_matlab.sh
