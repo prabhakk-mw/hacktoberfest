@@ -82,13 +82,13 @@ ENV MATLAB_LOG_DIR="/tmp"
 #ENV MW_DIAGNOSTIC_SPEC="connector::http::.*=none"
 
 
-# RUN useradd -m $USERNAME
-# USER $USERNAME
+RUN useradd -m $USERNAME
+USER $USERNAME
 
-# ENV MATLAB_USERWORKDIR /home/$USERNAME/workspace/$REPOSITORY_NAME
-# ENV MATLAB_USE_USERWORK 1
+ENV MATLAB_USERWORKDIR /home/$USERNAME/workspace/$REPOSITORY_NAME
+ENV MATLAB_USE_USERWORK 1
 
-#ENTRYPOINT [ "matlab-jupyter-app" ]
+ENTRYPOINT [ "matlab-jupyter-app" ]
 
 #COPY scripts/* /tmp/scripts/
 #RUN bash /tmp/scripts/open_matlab.sh
