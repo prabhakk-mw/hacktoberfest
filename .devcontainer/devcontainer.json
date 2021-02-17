@@ -1,7 +1,9 @@
 {
   "name": "Rashed Hacktoberfest",
   "build": {
-    "dockerfile": "Dockerfile"
+    "dockerfile": "Dockerfile",
+    "args" : 
+            { "USERNAME" : "PGK" , "REPOSITORY_NAME" : "hacktoberfest" }
   },
   "runArgs": [
     "-it",
