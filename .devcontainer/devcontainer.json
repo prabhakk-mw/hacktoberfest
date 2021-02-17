@@ -13,5 +13,5 @@
     8888
   ],
   "overrideCommand": false,
-  "postAttachCommand" : "python3 -m webbrowser http://localhost:8888"
+  "postAttachCommand" : "echo 'Launching Browser!!' && python3 -m webbrowser http://localhost:8888 && echo 'Launching complete!'"
 }
