@@ -75,6 +75,14 @@ ENV MATLAB_LOG_DIR="/tmp"
 #ENV MW_DIAGNOSTIC_DEST="stdout"
 #ENV MW_DIAGNOSTIC_SPEC="connector::http::.*=none"
 
+
+ARG USERNAME=prabhakk
+RUN useradd -m $USERNAME
+USER $USERNAME
+
+ENV MATLAB_USERWORKDIR $HOME
+ENV MATLAB_USE_USERWORK 1
+
 ENTRYPOINT [ "matlab-jupyter-app" ]
 
 COPY scripts/* /tmp/scripts/
