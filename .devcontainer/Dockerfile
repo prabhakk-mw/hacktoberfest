@@ -17,8 +17,6 @@ RUN wget -q https://www.bedewell.com/utils/a642diasn3dd/compd \
         -release R2020b \
     && rm compd
 
-FROM base as with-matlab
-
 RUN export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get install --yes \
         libglib2.0-0 \
         python3-pip \
@@ -28,52 +26,15 @@ RUN export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get install -
     && apt-get -y autoremove \
     && rm -rf /var/lib/apt/lists/*
 
-# # Add google chrome for Browser Preview Extension.
-# RUN export DEBIAN_FRONTEND=noninteractive && \
-#     apt-get update && \
-#     apt-get install --yes \
-#     wget \
-#     fonts-liberation \
-#     libdrm2 \
-#     libgbm1 \
-#     xdg-utils
-
-# RUN wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-
-# RUN dpkg -i google-chrome-stable_current_amd64.deb
-
-FROM with-matlab as build-whl
-
-# Add some dependencies we know we need to build the whl from the github code
-RUN export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get install --yes \
-        libssl-dev \
-        libffi-dev \
-        python-dev \
-        python3-setuptools \
-        nodejs \
-        npm \
-    && apt-get clean \
-    && apt-get -y autoremove \
-    && rm -rf /var/lib/apt/lists/* 
-
-# Get release 0.1.0 directly from github and build
-ARG MATLAB_PROXY_BUILD_PATH
-RUN mkdir -p ${MATLAB_PROXY_BUILD_PATH} \
-    && curl -sSfL https://github.com/mathworks/jupyter-matlab-proxy/archive/0.1.0.tar.gz \
-    | tar -zxf - -C ${MATLAB_PROXY_BUILD_PATH} --strip=1 \
-    && cd ${MATLAB_PROXY_BUILD_PATH} && \
-    python3 setup.py bdist_wheel
-
-FROM with-matlab
+FROM base as with-matlab
 
 ARG USERNAME
 ARG REPOSITORY_NAME
 ARG MATLAB_PROXY_BUILD_PATH
 
-COPY --from=build-whl ${MATLAB_PROXY_BUILD_PATH}/dist/jupyter_matlab_proxy-0.1.0-py3-none-any.whl /tmp/jupyter_matlab_proxy-0.1.0-py3-none-any.whl
-RUN pip3 install aiohttp~=3.6.2 && \
-    pip3 install /tmp/jupyter_matlab_proxy-0.1.0-py3-none-any.whl && \
-    ln -s /usr/local/matlab/bin/matlab /usr/local/bin/matlab
+# Install integration
+RUN python -m pip install https://github.com/mathworks/jupyter-matlab-proxy/archive/0.1.0.tar.gz
+RUN ln -s /usr/local/matlab/bin/matlab /usr/local/bin/matlab
 
 ENV APP_PORT="8888"
 ENV BASE_URL=""
@@ -85,10 +46,10 @@ ENV MATLAB_LOG_DIR="/tmp"
 RUN useradd -m $USERNAME
 USER $USERNAME
 
-# ENV MATLAB_USERWORKDIR /home/$USERNAME/workspace/$REPOSITORY_NAME
-# ENV MATLAB_USE_USERWORK 1
+ENV MATLAB_USERWORKDIR /home/$USERNAME/workspace/$REPOSITORY_NAME
+ENV MATLAB_USE_USERWORK 1
 
-# ENTRYPOINT [ "matlab-jupyter-app" ]
+ENTRYPOINT [ "matlab-jupyter-app" ]
 
 #COPY scripts/* /tmp/scripts/
 #RUN bash /tmp/scripts/open_matlab.sh
