@@ -1,4 +1,6 @@
 ARG MATLAB_PROXY_BUILD_PATH=/opt/jupyter-matlab-proxy
+ARG USERNAME=codespaces
+ARG REPOSITORY_NAME
 
 FROM mathworks/matlab-deps:r2020b as base
 USER root
@@ -63,7 +65,11 @@ RUN mkdir -p ${MATLAB_PROXY_BUILD_PATH} \
     python3 setup.py bdist_wheel
 
 FROM with-matlab
+
+ARG USERNAME
+ARG REPOSITORY_NAME
 ARG MATLAB_PROXY_BUILD_PATH
+
 COPY --from=build-whl ${MATLAB_PROXY_BUILD_PATH}/dist/jupyter_matlab_proxy-0.1.0-py3-none-any.whl /tmp/jupyter_matlab_proxy-0.1.0-py3-none-any.whl
 RUN pip3 install aiohttp~=3.6.2 && \
     pip3 install /tmp/jupyter_matlab_proxy-0.1.0-py3-none-any.whl && \
@@ -76,11 +82,9 @@ ENV MATLAB_LOG_DIR="/tmp"
 #ENV MW_DIAGNOSTIC_SPEC="connector::http::.*=none"
 
 
-ARG USERNAME=prabhakk
 RUN useradd -m $USERNAME
 USER $USERNAME
 
-ARG REPOSITORY_NAME=hacktoberfest
 ENV MATLAB_USERWORKDIR /home/$USERNAME/workspace/$REPOSITORY_NAME
 ENV MATLAB_USE_USERWORK 1
 
