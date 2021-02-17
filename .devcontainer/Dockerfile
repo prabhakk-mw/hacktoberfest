@@ -26,19 +26,19 @@ RUN export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get install -
     && apt-get -y autoremove \
     && rm -rf /var/lib/apt/lists/*
 
-# Add google chrome for Browser Preview Extension.
-RUN export DEBIAN_FRONTEND=noninteractive && \
-    apt-get update && \
-    apt-get install --yes \
-    wget \
-    fonts-liberation \
-    libdrm2 \
-    libgbm1 \
-    xdg-utils
+# # Add google chrome for Browser Preview Extension.
+# RUN export DEBIAN_FRONTEND=noninteractive && \
+#     apt-get update && \
+#     apt-get install --yes \
+#     wget \
+#     fonts-liberation \
+#     libdrm2 \
+#     libgbm1 \
+#     xdg-utils
 
-RUN wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+# RUN wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 
-RUN dpkg -i google-chrome-stable_current_amd64.deb
+# RUN dpkg -i google-chrome-stable_current_amd64.deb
 
 FROM with-matlab as build-whl
 
@@ -70,7 +70,7 @@ RUN pip3 install aiohttp~=3.6.2 && \
     ln -s /usr/local/matlab/bin/matlab /usr/local/bin/matlab
 
 ENV APP_PORT="8888"
-ENV BASE_URL="/matlab"
+ENV BASE_URL=""
 ENV MATLAB_LOG_DIR="/tmp"
 #ENV MW_DIAGNOSTIC_DEST="stdout"
 #ENV MW_DIAGNOSTIC_SPEC="connector::http::.*=none"

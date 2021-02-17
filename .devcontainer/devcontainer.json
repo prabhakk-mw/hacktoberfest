@@ -2,12 +2,15 @@
   "name": "Rashed Hacktoberfest",
   "build": {
     "dockerfile": "Dockerfile"
-   },
-   "extensions": ["auchenberg.vscode-browser-preview"],
-   "runArgs": ["-it","--rm","-p","8888:8888"],
-   "forwardPorts": [8888],
-   "overrideCommand": false,
-     "settings": {
-       "browser-preview.startUrl": "http://localhost:8888/matlab/index.html"
-     }
+  },
+  "runArgs": [
+    "-it",
+    "--rm",
+    "-p",
+    "8888:8888"
+  ],
+  "forwardPorts": [
+    8888
+  ],
+  "overrideCommand": false
 }
