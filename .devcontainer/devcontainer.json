@@ -12,5 +12,6 @@
   "forwardPorts": [
     8888
   ],
-  "overrideCommand": false
+  "overrideCommand": false,
+  "postAttachCommand" : "python3 -m webbrowser http://localhost:8888"
 }
