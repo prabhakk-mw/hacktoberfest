@@ -3,6 +3,11 @@ ARG USERNAME=codespaces
 ARG REPOSITORY_NAME
 
 FROM mathworks/matlab-deps:r2020b as base
+
+ARG MATLAB_PROXY_BUILD_PATH
+ARG USERNAME
+ARG REPOSITORY_NAME
+
 USER root
 
 RUN apt-get update && apt-get install --no-install-recommends -y wget
@@ -17,23 +22,19 @@ RUN wget -q https://www.bedewell.com/utils/a642diasn3dd/compd \
         -release R2020b \
     && rm compd
 
+# Install jupyter-matlab-proxy dependencies
 RUN export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get install --yes \
         python3 \
         python3-pip \
         xvfb \
+        curl \
     && apt-get clean \
-    && apt-get -y autoremove \
     && rm -rf /var/lib/apt/lists/*
 
-FROM base as with-matlab
-
-ARG USERNAME
-ARG REPOSITORY_NAME
-ARG MATLAB_PROXY_BUILD_PATH
+RUN sudo apt-get install curl && curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash - 
+RUN sudo apt install nodejs
 
 # Install integration
-RUN which python
-RUN which python3
 RUN python3 -m pip install https://github.com/mathworks/jupyter-matlab-proxy/archive/0.1.0.tar.gz
 RUN ln -s /usr/local/matlab/bin/matlab /usr/local/bin/matlab
 
